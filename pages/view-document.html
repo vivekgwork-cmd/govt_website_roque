@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document Viewer | District Training Center, Shimoga</title>
+<link rel="icon" href="../assets/karnataka-logo.png">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .viewer-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: var(--maroon);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 18px;
+    flex-wrap: wrap;
+  }
+  .viewer-toolbar h2 { margin: 0; font-size: 1rem; }
+  .viewer-controls { display: flex; align-items: center; gap: 8px; }
+  .viewer-controls button {
+    background: var(--gold);
+    color: var(--maroon-dark);
+    border: none;
+    border-radius: 5px;
+    padding: 6px 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+  .viewer-controls button:hover { background: #fff; }
+  .viewer-controls span { font-size: 0.85rem; min-width: 70px; text-align: center; }
+
+  .viewer-stage {
+    background: #4a3a2c;
+    min-height: calc(100vh - 130px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 24px 12px 60px;
+    user-select: none;
+    -webkit-user-select: none;
+    overflow-x: auto;
+  }
+
+  .pdf-page-wrap {
+    position: relative;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    background: #fff;
+    flex-shrink: 0;
+  }
+  .pdf-page-wrap img {
+    display: block;
+    width: 100%;
+    height: auto;
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
+
+  .watermark-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .watermark-layer span {
+    position: absolute;
+    color: rgba(122, 12, 12, 0.14);
+    font-size: 1.4rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transform: rotate(-30deg);
+  }
+
+  .viewer-status {
+    color: #f2e6cf;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 40px 0;
+  }
+
+  .notice-banner {
+    background: #fff4d6;
+    color: #58080a;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 8px 14px;
+  }
+
+  @media print {
+    body::before {
+      content: "Printing is disabled for this document.";
+      display: block;
+      text-align: center;
+      font-size: 1.2rem;
+      padding: 40px;
+    }
+    .viewer-toolbar, .viewer-stage, header, footer { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<div class="notice-banner">This document is available for on-screen viewing only. Downloading and printing are disabled.</div>
+
+<div class="viewer-toolbar">
+  <h2 id="doc-title">Loading document&hellip;</h2>
+  <div class="viewer-controls">
+    <button id="zoom-out" title="Zoom out">&minus;</button>
+    <span id="zoom-level">100%</span>
+    <button id="zoom-in" title="Zoom in">+</button>
+  </div>
+</div>
+
+<div class="viewer-stage" id="viewer-stage">
+  <p class="viewer-status" id="viewer-status">Loading document&hellip;</p>
+</div>
+
+<footer id="site-footer"></footer>
+
+<script src="../js/script.js"></script>
+<script>
+  renderHeader("../", "training");
+  renderFooter("../");
+
+  // Each document is pre-rendered to page images (see assets/docs) so the
+  // viewer has no dependency on an in-browser PDF renderer.
+  const DOCS = {
+    "cg-appointment": { title: "CG Appointment", pages: 2, prefix: "../assets/docs/cg-appointment-page" },
+    "time-management": { title: "Time Management", pages: 2, prefix: "../assets/docs/time-management-page" }
+  };
+
+  const params = new URLSearchParams(location.search);
+  const docKey = params.get("file");
+  const doc = DOCS[docKey];
+
+  const titleEl = document.getElementById("doc-title");
+  const stage = document.getElementById("viewer-stage");
+  const statusEl = document.getElementById("viewer-status");
+  const zoomLevelEl = document.getElementById("zoom-level");
+  const zoomInBtn = document.getElementById("zoom-in");
+  const zoomOutBtn = document.getElementById("zoom-out");
+
+  let scale = 1;
+  const MIN_SCALE = 0.6, MAX_SCALE = 2.2;
+
+  function watermarkOverlay() {
+    const layer = document.createElement("div");
+    layer.className = "watermark-layer";
+    for (let i = 0; i < 6; i++) {
+      const span = document.createElement("span");
+      span.textContent = "GOVERNMENT OF KARNATAKA — VIEW ONLY";
+      span.style.top = (i * 18) + "%";
+      span.style.left = "-10%";
+      layer.appendChild(span);
+    }
+    return layer;
+  }
+
+  function applyScale() {
+    zoomLevelEl.textContent = Math.round(scale * 100) + "%";
+    const basePageWidth = Math.min(720, stage.clientWidth - 24);
+    stage.querySelectorAll(".pdf-page-wrap").forEach(wrap => {
+      wrap.style.width = Math.round(basePageWidth * scale) + "px";
+    });
+  }
+
+  function loadDocument() {
+    if (!doc) {
+      titleEl.textContent = "Document not found";
+      statusEl.textContent = "The requested document could not be found.";
+      return;
+    }
+    titleEl.textContent = doc.title;
+    document.title = doc.title + " | District Training Center, Shimoga";
+
+    stage.innerHTML = "";
+    for (let num = 1; num <= doc.pages; num++) {
+      const wrap = document.createElement("div");
+      wrap.className = "pdf-page-wrap";
+
+      const img = document.createElement("img");
+      img.src = `${doc.prefix}-${num}.png`;
+      img.alt = `${doc.title} — page ${num}`;
+      img.draggable = false;
+
+      wrap.appendChild(img);
+      wrap.appendChild(watermarkOverlay());
+      stage.appendChild(wrap);
+    }
+    applyScale();
+  }
+
+  zoomInBtn.addEventListener("click", () => {
+    if (scale >= MAX_SCALE) return;
+    scale = Math.min(MAX_SCALE, +(scale + 0.2).toFixed(2));
+    applyScale();
+  });
+  zoomOutBtn.addEventListener("click", () => {
+    if (scale <= MIN_SCALE) return;
+    scale = Math.max(MIN_SCALE, +(scale - 0.2).toFixed(2));
+    applyScale();
+  });
+
+  // Best-effort deterrents against casual saving/printing.
+  // Note: no browser-based viewer can fully block downloading, printing, or
+  // screenshotting (OS-level tools and browser devtools can always bypass this).
+  document.addEventListener("contextmenu", (e) => e.preventDefault());
+  document.addEventListener("keydown", (e) => {
+    const key = e.key.toLowerCase();
+    if ((e.ctrlKey || e.metaKey) && ["s", "p", "u"].includes(key)) {
+      e.preventDefault();
+    }
+  });
+
+  loadDocument();
+</script>
+</body>
+</html>

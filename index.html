@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | District Training Center, Shimoga</title>
+<link rel="icon" href="assets/karnataka-logo.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="top-strip">
+  <span>Government of Karnataka | ಕರ್ನಾಟಕ ಸರ್ಕಾರ</span>
+  <span id="today-date"></span>
+</div>
+
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-head">
+      <img src="assets/karnataka-logo.png" alt="Government of Karnataka Logo">
+      <h2>District Training Center, Shimoga</h2>
+      <p>Government of Karnataka &mdash; Staff Login</p>
+      <p style="margin-top:10px; font-size:0.78rem; background:#fff4d6; border:1px dashed #f2b705; border-radius:6px; padding:8px 10px; color:#58080a;">
+        Demo credentials &mdash; Login ID: <strong>dtc_shimoga</strong> &nbsp;|&nbsp; Password: <strong>Karnataka@123</strong>
+      </p>
+    </div>
+    <form class="login-form" id="login-form">
+      <div class="field">
+        <label for="login-id">LOGIN ID</label>
+        <input type="text" id="login-id" placeholder="Enter your Login ID" autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="login-password">PASSWORD</label>
+        <input type="password" id="login-password" placeholder="Enter your Password" autocomplete="current-password">
+      </div>
+      <div class="field">
+        <label for="captcha-input">CAPTCHA</label>
+        <div class="captcha-row">
+          <span class="captcha-box" id="captcha-text"></span>
+          <button type="button" class="captcha-refresh" id="captcha-refresh" title="Refresh captcha">&#8635;</button>
+        </div>
+        <input type="text" id="captcha-input" placeholder="Enter the code above" style="margin-top:10px">
+      </div>
+      <button type="submit" class="btn-login">LOGIN</button>
+      <p class="form-msg" id="form-msg"></p>
+    </form>
+  </div>
+</div>
+
+<div class="site-footer">
+  <p>&copy; <span id="year"></span> District Training Center, Shimoga &mdash; Government of Karnataka. All Rights Reserved.</p>
+  <p class="designed-by">This is a demo website built from the supplied layout &amp; logo.</p>
+</div>
+
+<script src="js/script.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  document.getElementById("today-date").textContent = new Date().toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" });
+  initLoginForm();
+</script>
+</body>
+</html>
