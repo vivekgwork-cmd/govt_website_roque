@@ -4,7 +4,7 @@ A demo website for the District Training Institute, Shimoga (Government of Karna
 
 ## What's included
 
-- `index.html` — staff login page (demo credentials shown on the page itself)
+- `index.html` — staff login page
 - `pages/home.html` — landing page with quick links
 - `pages/about.html` — About Us (Principal / Vice Principal / Instructor)
 - `pages/training-material.html` — General Topic, Office Procedure, K.F.C, K.C.S.R
