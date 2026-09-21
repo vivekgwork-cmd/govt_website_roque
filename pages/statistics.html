@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statistics and Calendar | District Training Institute, Shimoga</title>
+<link rel="icon" href="../assets/karnataka-logo.png">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header id="site-header"></header>
+
+<div class="breadcrumb"><a href="home.html">Home</a> &nbsp;/&nbsp; Statistics and Calendar</div>
+
+<div class="container">
+  <h2 class="page-title">Statistics and Calendar</h2>
+
+  <section id="training-statistics" data-statistics-section="training">
+    <h3 class="section-title"><a href="statistics.html?section=training">DTI Training Statistics</a></h3>
+    <div class="card-grid">
+    <div class="info-card" id="training-statistics-2022-23"><h3><a href="statistics.html?section=training#training-statistics-2022-23">Report 2022-23</a></h3><p><a href="#training-statistics-2022-23">Detailed Report</a></p><p><a href="#training-statistics-2022-23">Consolidated Report</a></p></div>
+    <div class="info-card" id="training-statistics-2023-24"><h3><a href="statistics.html?section=training#training-statistics-2023-24">Report 2023-24</a></h3><p><a href="#training-statistics-2023-24">Detailed Report</a></p><p><a href="#training-statistics-2023-24">Consolidated Report</a></p></div>
+    <div class="info-card" id="training-statistics-2024-25"><h3><a href="statistics.html?section=training#training-statistics-2024-25">Report 2024-25</a></h3><p><a href="#training-statistics-2024-25">Detailed Report</a></p><p><a href="#training-statistics-2024-25">Consolidated Report</a></p></div>
+    <div class="info-card" id="training-statistics-2025-26"><h3><a href="statistics.html?section=training#training-statistics-2025-26">Report 2025-26</a></h3><p><a href="#training-statistics-2025-26">Detailed Report</a></p><p><a href="#training-statistics-2025-26">Consolidated Report</a></p></div>
+    <div class="info-card" id="training-statistics-2026-27"><h3><a href="statistics.html?section=training#training-statistics-2026-27">Report 2026-27</a></h3><p><a href="#training-statistics-2026-27">Detailed Report</a></p><p><a href="#training-statistics-2026-27">Consolidated Report</a></p></div>
+    </div>
+  </section>
+
+  <section data-statistics-section="administrative">
+    <h3 class="section-title"><a href="statistics.html?section=administrative">Administrative Statistics</a></h3>
+    <div class="card-grid">
+    <div class="info-card" id="fundamental-details"><h3><a href="#fundamental-details">Fundamental Details of DTI</a></h3></div>
+    <div class="info-card" id="dti-infrastructure"><h3><a href="#dti-infrastructure">DTI Infrastructure</a></h3></div>
+    <div class="info-card" id="staff-details"><h3><a href="#staff-details">Staff Details</a></h3></div>
+    <div class="info-card" id="duty-responsibility"><h3><a href="#duty-responsibility">Duty and Responsibility</a></h3></div>
+    </div>
+  </section>
+
+  <section data-statistics-section="calendar">
+    <h3 class="section-title"><a href="statistics.html?section=calendar">Calendar</a></h3>
+    <div class="card-grid">
+    <div class="info-card" id="calendar-2022-23"><h3><a href="statistics.html?section=calendar#calendar-2022-23">2022-23</a></h3><p><a href="#calendar-2022-23">Proposed Annual Calendar</a></p><p><a href="#calendar-2022-23">Conducted Annual Program</a></p></div>
+    <div class="info-card" id="calendar-2023-24"><h3><a href="statistics.html?section=calendar#calendar-2023-24">2023-24</a></h3><p><a href="#calendar-2023-24">Proposed Annual Calendar</a></p><p><a href="#calendar-2023-24">Conducted Annual Program</a></p></div>
+    <div class="info-card" id="calendar-2024-25"><h3><a href="statistics.html?section=calendar#calendar-2024-25">2024-25</a></h3><p><a href="#calendar-2024-25">Proposed Annual Calendar</a></p><p><a href="#calendar-2024-25">Conducted Annual Program</a></p></div>
+    <div class="info-card" id="calendar-2025-26"><h3><a href="statistics.html?section=calendar#calendar-2025-26">2025-26</a></h3><p><a href="#calendar-2025-26">Proposed Annual Calendar</a></p><p><a href="#calendar-2025-26">Conducted Annual Program</a></p></div>
+    <div class="info-card" id="calendar-2026-27"><h3><a href="statistics.html?section=calendar#calendar-2026-27">2026-27</a></h3><p><a href="#calendar-2026-27">Proposed Annual Calendar</a></p><p><a href="#calendar-2026-27">Conducted Annual Program</a></p></div>
+    </div>
+  </section>
+</div>
+
+<footer id="site-footer"></footer>
+
+<script src="../js/script.js"></script>
+<script>
+  renderHeader("../", "statistics");
+  renderFooter("../");
+
+  const section = new URLSearchParams(location.search).get("section");
+  if (section) {
+    document.querySelectorAll("[data-statistics-section]").forEach((item) => {
+      item.hidden = item.dataset.statisticsSection !== section;
+    });
+  }
+</script>
+</body>
+</html>

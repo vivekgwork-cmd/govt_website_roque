@@ -17,6 +17,24 @@ body {
   font-family: "Segoe UI", "Noto Sans Kannada", Tahoma, sans-serif;
   background: var(--cream);
   color: var(--ink);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("../assets/karnataka-logo.png") center center / min(45vw, 420px) auto no-repeat;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 img { max-width: 100%; }
@@ -40,19 +58,22 @@ a { text-decoration: none; color: inherit; }
   border-bottom: 4px solid var(--gold);
   padding: 14px 24px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .site-header .logo {
-  height: 68px;
-  width: 68px;
+  height: 100px;
+  width: 100px;
   object-fit: contain;
   flex-shrink: 0;
 }
 
-.header-text { flex: 1; min-width: 220px; }
+.header-text {
+  width: 100%;
+  text-align: center;
+}
 
 .header-text .kn-title {
   font-size: 1.35rem;
@@ -91,6 +112,8 @@ a { text-decoration: none; color: inherit; }
 }
 
 .navbar li { position: relative; }
+
+.navbar .nav-logout { margin-left: auto; }
 
 .navbar a, .navbar .nav-label {
   display: block;
@@ -362,6 +385,7 @@ a { text-decoration: none; color: inherit; }
 
 /* ---------- Footer ---------- */
 .site-footer {
+  margin-top: auto;
   background: var(--maroon-dark);
   color: var(--gold-light);
   text-align: center;

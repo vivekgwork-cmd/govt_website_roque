@@ -13,7 +13,7 @@ function renderHeader(basePath, activePage) {
       <div class="header-text">
         <p class="kn-title">ಕರ್ನಾಟಕ ಸರ್ಕಾರ</p>
         <p class="en-subtitle">GOVERNMENT OF KARNATAKA</p>
-        <p class="dept-name">District Training Center, Shimoga</p>
+        <p class="dept-name">District Training Institute, Shimoga</p>
       </div>
     </div>
     <nav class="navbar">
@@ -21,16 +21,14 @@ function renderHeader(basePath, activePage) {
         <li><a href="${basePath}pages/home.html" data-page="home">Home</a></li>
         <li><a href="${basePath}pages/about.html" data-page="about">About Us</a></li>
         <li>
-          <span class="nav-label" data-page="training">Training Material</span>
-          <div class="dropdown-menu">
-            <a href="${basePath}pages/training-material.html#general-topic">General Topic</a>
-            <a href="${basePath}pages/training-material.html#office-procedure">Office Procedure</a>
-            <a href="${basePath}pages/training-material.html#kfc">K.F.C (Karnataka Financial Code)</a>
-            <a href="${basePath}pages/training-material.html#kcsr">K.C.S.R</a>
-          </div>
+          <a href="${basePath}pages/training-material.html" data-page="training">Training Material</a>
         </li>
-        <li><a href="${basePath}pages/circular.html" data-page="circular">Circular</a></li>
+        <li><a href="${basePath}pages/circular.html" data-page="circular">Circulars</a></li>
+        <li><a href="${basePath}pages/training-statistics.html" data-page="training-statistics">DTI Training Statistics</a></li>
+        <li><a href="${basePath}pages/administrative-statistics.html" data-page="administrative-statistics">Administrative Statistics</a></li>
+        <li><a href="${basePath}pages/calendar.html" data-page="calendar">Calendar</a></li>
         <li><a href="${basePath}pages/designed-by.html" data-page="designed">Designed By</a></li>
+        <li class="nav-logout"><a href="${basePath}index.html">Logout</a></li>
       </ul>
     </nav>
   `;
@@ -52,8 +50,7 @@ function renderFooter(basePath) {
   if (!footer) return;
   footer.classList.add("site-footer");
   footer.innerHTML = `
-    <p>&copy; ${new Date().getFullYear()} District Training Center, Shimoga &mdash; Government of Karnataka. All Rights Reserved.</p>
-    <p class="designed-by">This is a demo website built from the supplied layout &amp; logo.</p>
+    <p>&copy; ${new Date().getFullYear()} District Training Institute, Shimoga &mdash; Government of Karnataka. All Rights Reserved.</p>
   `;
 }
 
