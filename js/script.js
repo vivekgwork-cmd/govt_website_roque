@@ -9,7 +9,7 @@ function renderHeader(basePath, activePage) {
       <span id="today-date"></span>
     </div>
     <div class="site-header">
-      <img src="${basePath}assets/karnataka-logo.png" alt="Government of Karnataka Logo" class="logo">
+      <img src="${basePath}assets/new-kar-govt-logo.jpeg" alt="Government of Karnataka Logo" class="logo">
       <div class="header-text">
         <p class="kn-title">ಕರ್ನಾಟಕ ಸರ್ಕಾರ</p>
         <p class="en-subtitle">GOVERNMENT OF KARNATAKA</p>
@@ -103,7 +103,7 @@ function initLoginForm() {
     }
     msg.style.color = "#2f7d32";
     msg.textContent = "Login successful. Redirecting...";
-    setTimeout(() => { window.location.href = "pages/home.html"; }, 700);
+    setTimeout(() => { window.location.href = "pages/about.html"; }, 700);
   });
 }
 

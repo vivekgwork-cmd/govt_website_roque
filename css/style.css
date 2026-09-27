@@ -26,7 +26,9 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: url("../assets/karnataka-logo.png") center center / min(45vw, 420px) auto no-repeat;
+  background: url("../assets/new-kar-govt-logo.jpeg") center center / min(45vw, 420px) auto no-repeat;
+  -webkit-mask: radial-gradient(circle min(19vw, 178px) at center, #000 99%, transparent 100%);
+          mask: radial-gradient(circle min(19vw, 178px) at center, #000 99%, transparent 100%);
   opacity: 0.5;
   pointer-events: none;
   z-index: 0;
@@ -67,6 +69,7 @@ a { text-decoration: none; color: inherit; }
   height: 100px;
   width: 100px;
   object-fit: contain;
+  border-radius: 50%;
   flex-shrink: 0;
 }
 
@@ -263,7 +266,7 @@ a { text-decoration: none; color: inherit; }
   text-align: center;
   padding: 26px 20px 14px;
 }
-.login-card .login-head img { height: 72px; margin-bottom: 8px; }
+.login-card .login-head img { height: 72px; margin-bottom: 8px; border-radius: 50%; }
 .login-card .login-head h2 { margin: 0; font-size: 1.05rem; color: var(--maroon); }
 .login-card .login-head p { margin: 4px 0 0; font-size: 0.82rem; color: var(--muted); }
 
@@ -354,6 +357,26 @@ a { text-decoration: none; color: inherit; }
 }
 .staff-card h4 { margin: 0 0 4px; color: var(--maroon); }
 .staff-card p { margin: 0; font-size: 0.85rem; color: var(--muted); }
+.staff-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 14px;
+  background: #fff;
+}
+.staff-card .staff-role { font-weight: 600; color: var(--maroon); margin-bottom: 2px; }
+.staff-quote {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--card-border);
+  font-style: italic;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #4a3a2c;
+}
 
 /* ---------- Circular list ---------- */
 .circular-list {
