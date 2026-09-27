@@ -5,85 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document Viewer | District Training Institute, Shimoga</title>
 <link rel="icon" href="../assets/new-kar-govt-logo.jpeg">
-<link rel="stylesheet" href="../css/style.css?v=2">
-<style>
-  .viewer-toolbar {
-    position: sticky;
-    top: 0;
-    z-index: 30;
-    background: var(--maroon);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 10px 18px;
-    flex-wrap: wrap;
-  }
-  .viewer-toolbar h2 { margin: 0; font-size: 1rem; }
-  .viewer-parts { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .viewer-parts button {
-    background: var(--gold);
-    color: var(--maroon-dark);
-    border: none;
-    border-radius: 5px;
-    padding: 6px 12px;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 0.85rem;
-  }
-  .viewer-parts button:hover, .viewer-parts button.active { background: #fff; }
-
-  .viewer-stage {
-    background: #4a3a2c;
-    padding: 16px 12px 40px;
-  }
-  .viewer-stage iframe {
-    display: block;
-    width: 100%;
-    max-width: 1100px;
-    height: calc(100vh - 170px);
-    min-height: 480px;
-    margin: 0 auto;
-    border: none;
-    background: #fff;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-  }
-
-  .viewer-status {
-    color: #f2e6cf;
-    font-size: 0.85rem;
-    text-align: center;
-    padding: 40px 0;
-  }
-
-  .notice-banner {
-    background: #fff4d6;
-    color: #58080a;
-    font-size: 0.8rem;
-    text-align: center;
-    padding: 8px 14px;
-  }
-</style>
+<link rel="stylesheet" href="../css/style.css?v=3">
 </head>
 <body>
 
 <header id="site-header"></header>
 
-<div class="notice-banner">This document is provided for on-screen viewing.</div>
-
 <div class="viewer-toolbar">
-  <h2 id="doc-title">Loading document&hellip;</h2>
-  <div class="viewer-parts" id="viewer-parts"></div>
+  <div class="viewer-toolbar-inner">
+    <a class="btn btn-ghost btn-sm" id="back-link" href="training-material.html">&larr; Back</a>
+    <h1 id="doc-title">Loading document&hellip;</h1>
+    <div class="viewer-parts" id="viewer-parts"></div>
+  </div>
 </div>
 
-<div class="viewer-stage" id="viewer-stage">
-  <p class="viewer-status" id="viewer-status">Loading document&hellip;</p>
-</div>
+<main class="viewer-stage" id="viewer-stage">
+  <p class="viewer-status">Loading document&hellip;</p>
+</main>
 
 <footer id="site-footer"></footer>
 
-<script src="../js/script.js?v=2"></script>
+<script src="../js/script.js?v=3"></script>
 <script>
   renderHeader("../", "training");
   renderFooter("../");
@@ -99,6 +41,13 @@
   const stage = document.getElementById("viewer-stage");
   const partsEl = document.getElementById("viewer-parts");
 
+  // Return to wherever the learner came from (Training Material or Administrative Statistics).
+  const backLink = document.getElementById("back-link");
+  if (document.referrer && new URL(document.referrer).origin === location.origin) {
+    backLink.href = document.referrer;
+    backLink.addEventListener("click", (e) => { e.preventDefault(); history.back(); });
+  }
+
   function showStatus(text) {
     stage.innerHTML = "";
     const p = document.createElement("p");
@@ -113,7 +62,10 @@
     const isPdf = /\.pdf$/i.test(file);
     const isLocal = !/^https?:$/.test(location.protocol) || /^(localhost|127\.|\[::1\])/.test(location.hostname);
 
-    partsEl.querySelectorAll("button").forEach((b, i) => b.classList.toggle("active", i === index));
+    partsEl.querySelectorAll("button").forEach((b, i) => {
+      b.classList.toggle("active", i === index);
+      b.setAttribute("aria-pressed", String(i === index));
+    });
 
     if (!isPdf && isLocal) {
       showStatus("Word and PowerPoint files can only be previewed on the published website.");
@@ -138,6 +90,7 @@
     if (files.length > 1) {
       files.forEach((_, i) => {
         const btn = document.createElement("button");
+        btn.type = "button";
         btn.textContent = "Part " + (i + 1);
         btn.addEventListener("click", () => show(i));
         partsEl.appendChild(btn);

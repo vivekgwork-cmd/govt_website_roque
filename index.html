@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login | District Training Institute, Shimoga</title>
 <link rel="icon" href="assets/new-kar-govt-logo.jpeg">
-<link rel="stylesheet" href="css/style.css?v=2">
+<link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body>
 
@@ -14,42 +14,53 @@
   <span id="today-date"></span>
 </div>
 
-<div class="login-wrap">
-  <div class="login-card">
-    <div class="login-head">
+<main class="login-wrap">
+  <div class="login-shell">
+    <div class="login-aside">
       <img src="assets/new-kar-govt-logo.jpeg" alt="Government of Karnataka Logo">
-      <h2>District Training Institute, Shimoga</h2>
-      <p>Government of Karnataka &mdash; Staff Login</p>
+      <p class="kn-title">ಜಿಲ್ಲಾ ತರಬೇತಿ ಸಂಸ್ಥೆ, ಶಿವಮೊಗ್ಗ</p>
+      <h1>District Training Institute, Shimoga</h1>
+      <p>Empowering Government Employees Through Continuous Learning</p>
+      <ul class="login-points">
+        <li>Training material for every module</li>
+        <li>Official circulars in one place</li>
+        <li>Training reports and annual calendars</li>
+      </ul>
     </div>
-    <form class="login-form" id="login-form">
-      <div class="field">
-        <label for="login-id">LOGIN ID</label>
-        <input type="text" id="login-id" placeholder="Enter your Login ID" autocomplete="username">
-      </div>
-      <div class="field">
-        <label for="login-password">PASSWORD</label>
-        <input type="password" id="login-password" placeholder="Enter your Password" autocomplete="current-password">
-      </div>
-      <div class="field">
-        <label for="captcha-input">CAPTCHA</label>
-        <div class="captcha-row">
-          <span class="captcha-box" id="captcha-text"></span>
-          <button type="button" class="captcha-refresh" id="captcha-refresh" title="Refresh captcha">&#8635;</button>
-        </div>
-        <input type="text" id="captcha-input" placeholder="Enter the code above" style="margin-top:10px">
-      </div>
-      <button type="submit" class="btn-login">LOGIN</button>
-      <p class="form-msg" id="form-msg"></p>
-    </form>
-  </div>
-</div>
 
-<div class="site-footer">
+    <div class="login-card">
+      <h2>Staff Login</h2>
+      <p class="sub">Sign in to access the learning portal.</p>
+      <form class="login-form" id="login-form">
+        <div class="field">
+          <label for="login-id">Login ID</label>
+          <input type="text" id="login-id" placeholder="Enter your Login ID" autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Enter your Password" autocomplete="current-password">
+        </div>
+        <div class="field">
+          <label for="captcha-input">Captcha</label>
+          <div class="captcha-row">
+            <span class="captcha-box" id="captcha-text" aria-live="polite"></span>
+            <button type="button" class="captcha-refresh" id="captcha-refresh" title="Refresh captcha" aria-label="Refresh captcha">&#8635;</button>
+          </div>
+          <input type="text" id="captcha-input" placeholder="Enter the code above" autocomplete="off">
+        </div>
+        <button type="submit" class="btn-login">Login</button>
+        <p class="form-msg" id="form-msg" role="alert"></p>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
   <p>&copy; <span id="year"></span> District Training Institute, Shimoga &mdash; Government of Karnataka. All Rights Reserved.</p>
   <p class="designed-by">Powered by Wbzard Labs</p>
-</div>
+</footer>
 
-<script src="js/script.js?v=2"></script>
+<script src="js/script.js?v=3"></script>
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
   document.getElementById("today-date").textContent = new Date().toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" });

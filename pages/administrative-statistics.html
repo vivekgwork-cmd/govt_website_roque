@@ -5,21 +5,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Administrative Statistics | District Training Institute, Shimoga</title>
 <link rel="icon" href="../assets/new-kar-govt-logo.jpeg">
-<link rel="stylesheet" href="../css/style.css?v=2">
+<link rel="stylesheet" href="../css/style.css?v=3">
 </head>
 <body>
+
 <header id="site-header"></header>
-<div class="breadcrumb"><a href="home.html">Home</a> &nbsp;/&nbsp; Administrative Statistics</div>
-<div class="container">
-  <h2 class="page-title">Administrative Statistics</h2>
-  <div class="card-grid">
-    <div class="info-card" id="fundamental-details"><h3><a href="view-document.html?title=Fundamental%20Details%20of%20DTI&amp;file=Fundamental%20Details%20of%20DTI.pdf">Fundamental Details of DTI</a></h3></div>
-    <div class="info-card" id="dti-infrastructure"><h3><a href="#">DTI Infrastructure</a></h3></div>
-    <div class="info-card" id="staff-details"><h3><a href="view-document.html?title=Staff%20Details&amp;file=Staff%20Details.pdf">Staff Details</a></h3></div>
+
+<section class="page-header">
+  <div class="page-header-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="home.html">Home</a><span class="sep">/</span>Administrative Statistics</nav>
+    <h1>Administrative Statistics</h1>
+    <p class="lead">Institutional details, infrastructure and staffing of the District Training Institute.</p>
   </div>
-</div>
+</section>
+
+<main class="container">
+  <div class="card-grid">
+    <div class="info-card" id="fundamental-details">
+      <span class="card-icon" aria-hidden="true">&#127979;</span>
+      <h3><a href="view-document.html?title=Fundamental%20Details%20of%20DTI&amp;file=Fundamental%20Details%20of%20DTI.pdf">Fundamental Details of DTI</a></h3>
+      <p>Key facts about the institute, its mandate and functioning.</p>
+      <span class="card-cta">View document &rarr;</span>
+    </div>
+    <div class="info-card is-soon" id="dti-infrastructure">
+      <span class="card-icon" aria-hidden="true">&#127970;</span>
+      <h3>DTI Infrastructure</h3>
+      <p>Classrooms, facilities and resources available at the institute.</p>
+      <span class="card-cta">Coming soon</span>
+    </div>
+    <div class="info-card" id="staff-details">
+      <span class="card-icon" aria-hidden="true">&#128101;</span>
+      <h3><a href="view-document.html?title=Staff%20Details&amp;file=Staff%20Details.pdf">Staff Details</a></h3>
+      <p>Faculty and staff currently serving at the institute.</p>
+      <span class="card-cta">View document &rarr;</span>
+    </div>
+  </div>
+</main>
+
 <footer id="site-footer"></footer>
-<script src="../js/script.js?v=2"></script>
-<script>renderHeader("../", "administrative-statistics"); renderFooter("../");</script>
+
+<script src="../js/script.js?v=3"></script>
+<script>
+  renderHeader("../", "administrative-statistics");
+  renderFooter("../");
+</script>
 </body>
 </html>
