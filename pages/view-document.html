@@ -21,8 +21,8 @@
     flex-wrap: wrap;
   }
   .viewer-toolbar h2 { margin: 0; font-size: 1rem; }
-  .viewer-controls { display: flex; align-items: center; gap: 8px; }
-  .viewer-controls button {
+  .viewer-parts { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .viewer-parts button {
     background: var(--gold);
     color: var(--maroon-dark);
     border: none;
@@ -32,49 +32,22 @@
     cursor: pointer;
     font-size: 0.85rem;
   }
-  .viewer-controls button:hover { background: #fff; }
-  .viewer-controls span { font-size: 0.85rem; min-width: 70px; text-align: center; }
+  .viewer-parts button:hover, .viewer-parts button.active { background: #fff; }
 
   .viewer-stage {
     background: #4a3a2c;
-    min-height: calc(100vh - 130px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-    padding: 24px 12px 60px;
-    user-select: none;
-    -webkit-user-select: none;
-    overflow-x: auto;
+    padding: 16px 12px 40px;
   }
-
-  .pdf-page-wrap {
-    position: relative;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-    background: #fff;
-    flex-shrink: 0;
-  }
-  .pdf-page-wrap img {
+  .viewer-stage iframe {
     display: block;
     width: 100%;
-    height: auto;
-    -webkit-user-drag: none;
-    pointer-events: none;
-  }
-
-  .watermark-layer {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-  .watermark-layer span {
-    position: absolute;
-    color: rgba(122, 12, 12, 0.14);
-    font-size: 1.4rem;
-    font-weight: 700;
-    white-space: nowrap;
-    transform: rotate(-30deg);
+    max-width: 1100px;
+    height: calc(100vh - 170px);
+    min-height: 480px;
+    margin: 0 auto;
+    border: none;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
   }
 
   .viewer-status {
@@ -91,32 +64,17 @@
     text-align: center;
     padding: 8px 14px;
   }
-
-  @media print {
-    body::before {
-      content: "Printing is disabled for this document.";
-      display: block;
-      text-align: center;
-      font-size: 1.2rem;
-      padding: 40px;
-    }
-    .viewer-toolbar, .viewer-stage, header, footer { display: none !important; }
-  }
 </style>
 </head>
 <body>
 
 <header id="site-header"></header>
 
-<div class="notice-banner">This document is available for on-screen viewing only. Downloading and printing are disabled.</div>
+<div class="notice-banner">This document is provided for on-screen viewing.</div>
 
 <div class="viewer-toolbar">
   <h2 id="doc-title">Loading document&hellip;</h2>
-  <div class="viewer-controls">
-    <button id="zoom-out" title="Zoom out">&minus;</button>
-    <span id="zoom-level">100%</span>
-    <button id="zoom-in" title="Zoom in">+</button>
-  </div>
+  <div class="viewer-parts" id="viewer-parts"></div>
 </div>
 
 <div class="viewer-stage" id="viewer-stage">
@@ -130,97 +88,63 @@
   renderHeader("../", "training");
   renderFooter("../");
 
-  // Each document is pre-rendered to page images (see assets/docs) so the
-  // viewer has no dependency on an in-browser PDF renderer.
-  const DOCS = {
-    "cg-appointment": { title: "CG Appointment", pages: 2, prefix: "../assets/docs/cg-appointment-page" },
-    "time-management": { title: "Time Management", pages: 2, prefix: "../assets/docs/time-management-page" }
-  };
-
+  // ?title=...&file=<path from site root>[&file=...]
+  // PDFs open in the browser's own viewer; Word/PowerPoint files are rendered by
+  // Microsoft's Office Online viewer, which needs the site to be publicly reachable.
   const params = new URLSearchParams(location.search);
-  const docKey = params.get("file");
-  const doc = DOCS[docKey];
+  const files = params.getAll("file").filter(f => f && !f.includes(".."));
+  const title = params.get("title") || "Document";
 
   const titleEl = document.getElementById("doc-title");
   const stage = document.getElementById("viewer-stage");
-  const statusEl = document.getElementById("viewer-status");
-  const zoomLevelEl = document.getElementById("zoom-level");
-  const zoomInBtn = document.getElementById("zoom-in");
-  const zoomOutBtn = document.getElementById("zoom-out");
+  const partsEl = document.getElementById("viewer-parts");
 
-  let scale = 1;
-  const MIN_SCALE = 0.6, MAX_SCALE = 2.2;
-
-  function watermarkOverlay() {
-    const layer = document.createElement("div");
-    layer.className = "watermark-layer";
-    for (let i = 0; i < 6; i++) {
-      const span = document.createElement("span");
-      span.textContent = "GOVERNMENT OF KARNATAKA — VIEW ONLY";
-      span.style.top = (i * 18) + "%";
-      span.style.left = "-10%";
-      layer.appendChild(span);
-    }
-    return layer;
+  function showStatus(text) {
+    stage.innerHTML = "";
+    const p = document.createElement("p");
+    p.className = "viewer-status";
+    p.textContent = text;
+    stage.appendChild(p);
   }
 
-  function applyScale() {
-    zoomLevelEl.textContent = Math.round(scale * 100) + "%";
-    const basePageWidth = Math.min(720, stage.clientWidth - 24);
-    stage.querySelectorAll(".pdf-page-wrap").forEach(wrap => {
-      wrap.style.width = Math.round(basePageWidth * scale) + "px";
-    });
-  }
+  function show(index) {
+    const file = files[index];
+    const url = new URL("../" + file.split("/").map(encodeURIComponent).join("/"), location.href).href;
+    const isPdf = /\.pdf$/i.test(file);
+    const isLocal = !/^https?:$/.test(location.protocol) || /^(localhost|127\.|\[::1\])/.test(location.hostname);
 
-  function loadDocument() {
-    if (!doc) {
-      titleEl.textContent = "Document not found";
-      statusEl.textContent = "The requested document could not be found.";
+    partsEl.querySelectorAll("button").forEach((b, i) => b.classList.toggle("active", i === index));
+
+    if (!isPdf && isLocal) {
+      showStatus("Word and PowerPoint files can only be previewed on the published website.");
       return;
     }
-    titleEl.textContent = doc.title;
-    document.title = doc.title + " | District Training Institute, Shimoga";
-
+    const frame = document.createElement("iframe");
+    frame.title = `${title} — part ${index + 1}`;
+    frame.src = isPdf
+      ? url + "#toolbar=0"
+      : "https://view.officeapps.live.com/op/embed.aspx?src=" + encodeURIComponent(url);
     stage.innerHTML = "";
-    for (let num = 1; num <= doc.pages; num++) {
-      const wrap = document.createElement("div");
-      wrap.className = "pdf-page-wrap";
-
-      const img = document.createElement("img");
-      img.src = `${doc.prefix}-${num}.png`;
-      img.alt = `${doc.title} — page ${num}`;
-      img.draggable = false;
-
-      wrap.appendChild(img);
-      wrap.appendChild(watermarkOverlay());
-      stage.appendChild(wrap);
-    }
-    applyScale();
+    stage.appendChild(frame);
   }
 
-  zoomInBtn.addEventListener("click", () => {
-    if (scale >= MAX_SCALE) return;
-    scale = Math.min(MAX_SCALE, +(scale + 0.2).toFixed(2));
-    applyScale();
-  });
-  zoomOutBtn.addEventListener("click", () => {
-    if (scale <= MIN_SCALE) return;
-    scale = Math.max(MIN_SCALE, +(scale - 0.2).toFixed(2));
-    applyScale();
-  });
+  titleEl.textContent = title;
+  document.title = title + " | District Training Institute, Shimoga";
 
-  // Best-effort deterrents against casual saving/printing.
-  // Note: no browser-based viewer can fully block downloading, printing, or
-  // screenshotting (OS-level tools and browser devtools can always bypass this).
-  document.addEventListener("contextmenu", (e) => e.preventDefault());
-  document.addEventListener("keydown", (e) => {
-    const key = e.key.toLowerCase();
-    if ((e.ctrlKey || e.metaKey) && ["s", "p", "u"].includes(key)) {
-      e.preventDefault();
+  if (!files.length) {
+    titleEl.textContent = "Document not found";
+    showStatus("The requested document could not be found.");
+  } else {
+    if (files.length > 1) {
+      files.forEach((_, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = "Part " + (i + 1);
+        btn.addEventListener("click", () => show(i));
+        partsEl.appendChild(btn);
+      });
     }
-  });
-
-  loadDocument();
+    show(0);
+  }
 </script>
 </body>
 </html>
