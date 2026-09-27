@@ -51,6 +51,7 @@ function renderFooter(basePath) {
   footer.classList.add("site-footer");
   footer.innerHTML = `
     <p>&copy; ${new Date().getFullYear()} District Training Institute, Shimoga &mdash; Government of Karnataka. All Rights Reserved.</p>
+    <p class="designed-by">Powered by Wbzard Labs</p>
   `;
 }
 
