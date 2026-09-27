@@ -358,11 +358,15 @@ a { text-decoration: none; color: inherit; }
 .staff-card h4 { margin: 0 0 4px; color: var(--maroon); }
 .staff-card p { margin: 0; font-size: 0.85rem; color: var(--muted); }
 .staff-photo {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
+  width: 150px !important;
+  max-width: 150px;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  height: 150px !important;
+  border-radius: 50% !important;
+  overflow: hidden;
   border: 3px solid var(--gold);
-  object-fit: cover;
+  object-fit: cover !important;
   display: block;
   margin: 0 auto 14px;
   background: #fff;
