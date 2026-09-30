@@ -1,6 +1,6 @@
-# District Training Institute, Shimoga — Demo Website
+# District Training Institute, Shivamogga — Demo Website
 
-A demo website for the District Training Institute, Shimoga (Government of Karnataka), built from a supplied page layout and the official Karnataka Government logo. It's a static site — plain HTML/CSS/JS, no build step, no server required.
+A demo website for the District Training Institute, Shivamogga (Government of Karnataka), built from a supplied page layout and the official Karnataka Government logo. It's a static site — plain HTML/CSS/JS, no build step, no server required.
 
 ## What's included
 

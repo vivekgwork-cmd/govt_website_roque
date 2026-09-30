@@ -14,7 +14,7 @@ function renderHeader(basePath, activePage) {
         <img src="${basePath}assets/new-kar-govt-logo.jpeg" alt="Government of Karnataka Logo" class="logo">
         <div class="brand-text">
           <p class="kn-title">ಕರ್ನಾಟಕ ಸರ್ಕಾರ</p>
-          <p class="dept-name">District Training Institute, Shimoga</p>
+          <p class="dept-name">District Training Institute, Shivamogga</p>
           <p class="en-subtitle">Government of Karnataka</p>
         </div>
       </a>
@@ -69,7 +69,7 @@ function renderFooter(basePath) {
   if (!footer) return;
   footer.classList.add("site-footer");
   footer.innerHTML = `
-    <p>&copy; ${new Date().getFullYear()} District Training Institute, Shimoga &mdash; Government of Karnataka. All Rights Reserved.</p>
+    <p>&copy; ${new Date().getFullYear()} District Training Institute, Shivamogga &mdash; Government of Karnataka. All Rights Reserved.</p>
     <p class="designed-by">Powered by Wbzard Labs</p>
   `;
 }
