@@ -548,18 +548,22 @@ a.doc-link:hover { color: var(--primary); }
 
 .staff-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 360px));
+  justify-content: center;
   gap: 22px;
   align-items: stretch;
   padding-top: 20px;
 }
-/* Principal (centre) sits higher; side cards sit lower */
-.staff-grid .staff-card { transform: translateY(20px); }
-.staff-grid .staff-card.featured { transform: translateY(-20px); }
+/* Principal sits alone in the centre of the top row; other staff sit centred below */
+.staff-grid .staff-card.featured {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 100%;
+  max-width: 360px;
+}
 @media (max-width: 860px) {
   .staff-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; padding-top: 0; }
-  .staff-grid .staff-card,
-  .staff-grid .staff-card.featured { transform: none; }
+  .staff-grid .staff-card.featured { max-width: none; }
 }
 
 .staff-card {
@@ -704,8 +708,8 @@ a.circ-link:hover { color: var(--primary); }
   gap: 12px;
 }
 .login-aside img {
-  width: 110px;
-  height: 110px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.12);
@@ -790,7 +794,7 @@ a.circ-link:hover { color: var(--primary); }
 @media (max-width: 800px) {
   .login-shell { grid-template-columns: 1fr; max-width: 460px; }
   .login-aside { padding: 30px 26px; text-align: center; align-items: center; }
-  .login-aside img { width: 84px; height: 84px; }
+  .login-aside img { width: 110px; height: 110px; }
   .login-aside .kn-title,
   .login-aside h1 { font-size: 1.3rem; }
   .login-points { display: none; }
